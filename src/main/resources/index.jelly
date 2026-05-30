@@ -1,0 +1,6 @@
+<?jelly escape-by-default='true'?>
+<div>
+  Adds a modern find widget to Jenkins code editors, including Pipeline Replay,
+  Script Console, and other CodeMirror, Ace, or large textarea-based editor
+  surfaces.
+</div>
