@@ -92,19 +92,4 @@
     </pluginRepository>
   </pluginRepositories>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.jenkins-ci.tools</groupId>
-        <artifactId>maven-hpi-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Support-Dynamic-Loading>true</Support-Dynamic-Loading>
-            </manifestEntries>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>

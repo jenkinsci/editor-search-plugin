@@ -128,11 +128,13 @@
   }
 
   function updateHostLayout(host) {
+    var hasSampleControl = false;
     var hostRect;
     var maxTop;
     var nextTop;
-    var top = DEFAULT_CONTROL_TOP;
     var parent = host && host.parentElement;
+    var sampleScope;
+    var top = DEFAULT_CONTROL_TOP;
 
     if (!host || !host.style || !parent || !host.getBoundingClientRect) {
       return;
@@ -140,8 +142,10 @@
 
     hostRect = host.getBoundingClientRect();
     maxTop = Math.max(DEFAULT_CONTROL_TOP, Math.min(96, hostRect.height - 40));
+    sampleScope =
+      (host.closest && host.closest(".workflow-editor-wrapper, .setting-main, .jenkins-form-item")) || parent;
 
-    Array.prototype.forEach.call(parent.querySelectorAll(".samples"), function (candidate) {
+    Array.prototype.forEach.call(sampleScope.querySelectorAll(".samples"), function (candidate) {
       var rect;
       if (host.contains(candidate) || !isVisible(candidate)) {
         return;
@@ -154,9 +158,16 @@
         rect.right > hostRect.left &&
         rect.left < hostRect.right
       ) {
+        hasSampleControl = true;
         top = Math.max(top, Math.ceil(rect.bottom - hostRect.top + CONTROL_GAP));
       }
     });
+
+    if (hasSampleControl) {
+      host.setAttribute("data-editor-search-sample-control", "true");
+    } else {
+      host.removeAttribute("data-editor-search-sample-control");
+    }
 
     nextTop = clamp(top, DEFAULT_CONTROL_TOP, maxTop) + "px";
     if (host.style.getPropertyValue("--editor-search-control-top") !== nextTop) {
@@ -172,6 +183,7 @@
   }
 
   function bindHostLayoutUpdates(host) {
+    var parent = host && host.parentElement;
     var refresh = function () {
       refreshHostLayoutSoon(host);
     };
@@ -185,6 +197,14 @@
     }
     if (aceEditor && aceEditor.on) {
       aceEditor.on("change", refresh);
+    }
+    if (parent && window.MutationObserver) {
+      new MutationObserver(refresh).observe(parent, {
+        attributes: true,
+        attributeFilter: ["class", "hidden", "style"],
+        childList: true,
+        subtree: true,
+      });
     }
   }
 

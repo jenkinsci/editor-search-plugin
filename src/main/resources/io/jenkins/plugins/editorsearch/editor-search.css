@@ -53,6 +53,13 @@
   transform: translateY(-2px);
 }
 
+.jenkins-editor-search-host[data-editor-search-sample-control="true"] > .jenkins-editor-search-trigger {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-2px);
+}
+
 .jenkins-editor-search-trigger:hover,
 .jenkins-editor-search-trigger:focus {
   background: var(--item-background--hover, var(--button-background--hover, #f4f6f8));
