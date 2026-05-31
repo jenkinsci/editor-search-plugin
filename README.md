@@ -47,7 +47,7 @@ The plugin requires Jenkins `2.528.3` or newer and Java 17. It has been tested o
 
 ## Reporting Issues
 
-Report issues and enhancement requests in [GitHub Issues](https://github.com/jenkinsci/editor-search-plugin/issues) after the plugin is hosted by the Jenkins project.
+Report issues and enhancement requests in [GitHub Issues](https://github.com/jenkinsci/editor-search-plugin/issues).
 
 ## Contributing
 
