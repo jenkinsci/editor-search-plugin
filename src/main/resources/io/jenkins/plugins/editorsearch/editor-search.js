@@ -5,8 +5,9 @@
   var OPEN_ATTRIBUTE = "data-editor-search-open";
   var MATCH_LIMIT = 10000;
   var DEFAULT_CONTROL_TOP = 8;
-  var DEFAULT_CONTROL_RIGHT = 42;
+  var DEFAULT_CONTROL_RIGHT = 10;
   var CONTROL_GAP = 8;
+  var SCROLLBAR_GAP = 6;
   var activeController = null;
   var discoverQueued = false;
 
@@ -133,7 +134,9 @@
     var hostRect;
     var maxTop;
     var nextTop;
+    var nextRight;
     var parent = host && host.parentElement;
+    var right = DEFAULT_CONTROL_RIGHT;
     var sampleScope;
     var top = DEFAULT_CONTROL_TOP;
 
@@ -142,6 +145,24 @@
     }
 
     hostRect = host.getBoundingClientRect();
+    Array.prototype.forEach.call(
+      host.querySelectorAll(".ace_scrollbar-v, .CodeMirror-vscrollbar"),
+      function (candidate) {
+        var rect;
+        if (!isVisible(candidate)) {
+          return;
+        }
+        rect = candidate.getBoundingClientRect();
+        if (
+          rect.right > hostRect.right - 12 &&
+          rect.left < hostRect.right &&
+          rect.bottom > hostRect.top &&
+          rect.top < hostRect.bottom
+        ) {
+          right = Math.max(right, Math.ceil(hostRect.right - rect.left + SCROLLBAR_GAP));
+        }
+      }
+    );
     maxTop = Math.max(DEFAULT_CONTROL_TOP, Math.min(96, hostRect.height - 40));
     sampleScope =
       (host.closest && host.closest(".workflow-editor-wrapper, .setting-main, .jenkins-form-item")) || parent;
@@ -174,6 +195,11 @@
     nextTop = clamp(top, DEFAULT_CONTROL_TOP, maxTop) + "px";
     if (host.style.getPropertyValue("--editor-search-control-top") !== nextTop) {
       host.style.setProperty("--editor-search-control-top", nextTop);
+    }
+
+    nextRight = right + "px";
+    if (host.style.getPropertyValue("--editor-search-control-right") !== nextRight) {
+      host.style.setProperty("--editor-search-control-right", nextRight);
     }
   }
 
