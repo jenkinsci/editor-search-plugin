@@ -15,7 +15,7 @@ Editor Search adds a compact search widget to Jenkins editor surfaces that other
 - Highlights all matches and the current match.
 - Works with Jenkins light mode, dark themes, and Prism syntax highlighting themes.
 - Avoids the Pipeline Replay sample selector when the script is empty.
-- Supports dynamic loading for no-restart first installation.
+- Supports Jenkins dynamic loading for no-restart plugin-manager and CLI installs.
 
 ## Supported Editors
 
@@ -25,15 +25,15 @@ Editor Search currently detects Jenkins CodeMirror and Ace editor instances, plu
 
 ## Installation
 
-After the plugin is available from the Jenkins update center, install it from **Manage Jenkins > Plugins**.
+Install Editor Search from **Manage Jenkins > Plugins** by searching for `Editor Search` or `editor-search`.
 
-For local testing, install the generated `target/editor-search.hpi` with the Jenkins CLI:
+For automated installs, use the Jenkins CLI:
 
 ```bash
-java -jar jenkins-cli.jar -s http://localhost:8080/ install-plugin = -deploy < target/editor-search.hpi
+java -jar jenkins-cli.jar -s http://localhost:8080/ install-plugin editor-search -deploy
 ```
 
-The plugin declares `Support-Dynamic-Loading: true`, so a first installation can be deployed without restarting Jenkins. Manual file-copy installation into `JENKINS_HOME/plugins` still requires a Jenkins restart because Jenkins only scans that directory during startup.
+Editor Search supports dynamic loading, so installs through the plugin manager or Jenkins CLI can be deployed without restarting Jenkins. Jenkins may still require a restart when another plugin in the same operation requires one, or when a plugin file is copied manually into `JENKINS_HOME/plugins`.
 
 ## Usage
 
