@@ -5,6 +5,7 @@
   var OPEN_ATTRIBUTE = "data-editor-search-open";
   var MATCH_LIMIT = 10000;
   var DEFAULT_CONTROL_TOP = 8;
+  var DEFAULT_CONTROL_RIGHT = 42;
   var CONTROL_GAP = 8;
   var activeController = null;
   var discoverQueued = false;
@@ -145,7 +146,7 @@
     sampleScope =
       (host.closest && host.closest(".workflow-editor-wrapper, .setting-main, .jenkins-form-item")) || parent;
 
-    Array.prototype.forEach.call(sampleScope.querySelectorAll(".samples"), function (candidate) {
+    Array.prototype.forEach.call(sampleScope.querySelectorAll(".samples, select"), function (candidate) {
       var rect;
       if (host.contains(candidate) || !isVisible(candidate)) {
         return;
@@ -156,7 +157,8 @@
         rect.bottom > hostRect.top &&
         rect.top < hostRect.top + 96 &&
         rect.right > hostRect.left &&
-        rect.left < hostRect.right
+        rect.left < hostRect.right &&
+        rect.right > hostRect.left + hostRect.width * 0.5
       ) {
         hasSampleControl = true;
         top = Math.max(top, Math.ceil(rect.bottom - hostRect.top + CONTROL_GAP));
@@ -1100,7 +1102,10 @@
     }
     var rect = this.adapter.getAnchorRect();
     var panelWidth = this.panel.offsetWidth || 360;
-    var left = Math.max(8, Math.min(rect.right - panelWidth - 8, window.innerWidth - panelWidth - 8));
+    var left = Math.max(
+      8,
+      Math.min(rect.right - panelWidth - DEFAULT_CONTROL_RIGHT, window.innerWidth - panelWidth - 8)
+    );
     var top = Math.max(8, rect.top + 8);
     this.panel.style.left = left + "px";
     this.panel.style.top = top + "px";
