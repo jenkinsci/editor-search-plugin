@@ -1,3 +1,5 @@
+import { isPrismCodeElement, clamp } from "./toolkit.mjs";
+
   function ReadonlyCodeAdapter(host) {
     this.type = "readonly";
     this.host = host;

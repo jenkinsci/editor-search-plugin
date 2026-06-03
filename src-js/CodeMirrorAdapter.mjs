@@ -41,7 +41,7 @@
       if (state.overlay) {
         try {
           codeMirror.removeOverlay(state.overlay);
-        } catch (error) {
+        } catch {
           // Search add-on state differs across Jenkins baselines; stale overlays are harmless if already gone.
         }
         state.overlay = null;

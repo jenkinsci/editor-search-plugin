@@ -3,6 +3,8 @@ import { CodeMirrorAdapter } from "./CodeMirrorAdapter.mjs";
 import { ReadonlyCodeAdapter } from "./ReadonlyCodeAdapter.mjs";
 import { TextareaAdapter } from "./TextareaAdapter.mjs";
 
+import { isPrismCodeElement, clamp } from "./toolkit.mjs";
+
 (function () {
   "use strict";
 
@@ -128,10 +130,6 @@ import { TextareaAdapter } from "./TextareaAdapter.mjs";
     } else {
       show();
     }
-  }
-
-  function clamp(value, min, max) {
-    return Math.max(min, Math.min(value, max));
   }
 
   function updateHostLayout(host) {
@@ -264,38 +262,6 @@ import { TextareaAdapter } from "./TextareaAdapter.mjs";
     window.setTimeout(remove, 260);
   }
 
-  function getAceRange() {
-    if (!window.ace || !window.ace.require) {
-      return null;
-    }
-    try {
-      return window.ace.require("ace/range").Range;
-    } catch (error) {
-      return null;
-    }
-  }
-
-  function getAceDocument(editor) {
-    if (editor.session.getDocument) {
-      return editor.session.getDocument();
-    }
-    return editor.session.doc;
-  }
-  
-  function isPrismCodeElement(element) {
-    var classes;
-    if (!element || element.tagName !== "CODE") {
-      return false;
-    }
-    classes = " " + element.className + " " + (element.parentElement ? element.parentElement.className : "") + " ";
-    return (
-      classes.indexOf(" language-") !== -1 ||
-      classes.indexOf(" line-numbers ") !== -1 ||
-      classes.indexOf(" match-braces ") !== -1 ||
-      classes.indexOf(" highlight ") !== -1
-    );
-  }
-
   function readonlyHostFromElement(element) {
     var host;
     if (!element || !element.closest) {
@@ -326,7 +292,7 @@ import { TextareaAdapter } from "./TextareaAdapter.mjs";
     if (!editor && window.ace && window.ace.edit) {
       try {
         editor = window.ace.edit(element);
-      } catch (error) {
+      } catch {
         editor = null;
       }
     }

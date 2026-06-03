@@ -70,6 +70,18 @@
   AceAdapter.prototype.isSameEditor = function(adapter) {
     return adapter && adapter.type === this.type && adapter.editor === this.editor;
   };
+  function getAceRange() {
+    if (!window.ace || !window.ace.require)
+      return null;
+    try {
+      return window.ace.require("ace/range").Range;
+    } catch {
+      return null;
+    }
+  }
+  function getAceDocument(editor) {
+    return editor.session.getDocument ? editor.session.getDocument() : editor.session.doc;
+  }
 
   // src-js/CodeMirrorAdapter.mjs
   function CodeMirrorAdapter(codeMirror) {
@@ -138,6 +150,15 @@
   CodeMirrorAdapter.prototype.isSameEditor = function(adapter) {
     return adapter && adapter.type === this.type && adapter.editor === this.editor;
   };
+
+  // src-js/toolkit.mjs
+  function isPrismCodeElement(element) {
+    var classes;
+    return !element || element.tagName !== "CODE" ? !1 : (classes = " " + element.className + " " + (element.parentElement ? element.parentElement.className : "") + " ", classes.indexOf(" language-") !== -1 || classes.indexOf(" line-numbers ") !== -1 || classes.indexOf(" match-braces ") !== -1 || classes.indexOf(" highlight ") !== -1);
+  }
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(value, max));
+  }
 
   // src-js/ReadonlyCodeAdapter.mjs
   function ReadonlyCodeAdapter(host) {
@@ -359,9 +380,6 @@
       };
       window.requestAnimationFrame ? window.requestAnimationFrame(show) : show();
     }
-    function clamp2(value, min, max) {
-      return Math.max(min, Math.min(value, max));
-    }
     function updateHostLayout(host) {
       var hasSampleControl = !1, hostRect, maxTop, nextTop, nextRight, parent = host && host.parentElement, right = DEFAULT_CONTROL_RIGHT, sampleScope, top = DEFAULT_CONTROL_TOP;
       !host || !host.style || !parent || !host.getBoundingClientRect || (hostRect = host.getBoundingClientRect(), Array.prototype.forEach.call(
@@ -373,7 +391,7 @@
       ), maxTop = Math.max(DEFAULT_CONTROL_TOP, Math.min(96, hostRect.height - 40)), sampleScope = host.closest && host.closest(".workflow-editor-wrapper, .setting-main, .jenkins-form-item") || parent, Array.prototype.forEach.call(sampleScope.querySelectorAll(".samples, select"), function(candidate) {
         var rect;
         host.contains(candidate) || !isVisible(candidate) || (rect = candidate.getBoundingClientRect(), rect.bottom > hostRect.top && rect.top < hostRect.top + 96 && rect.right > hostRect.left && rect.left < hostRect.right && rect.right > hostRect.left + hostRect.width * 0.5 && (hasSampleControl = !0, top = Math.max(top, Math.ceil(rect.bottom - hostRect.top + CONTROL_GAP))));
-      }), hasSampleControl ? host.setAttribute("data-editor-search-sample-control", "true") : host.removeAttribute("data-editor-search-sample-control"), nextTop = clamp2(top, DEFAULT_CONTROL_TOP, maxTop) + "px", host.style.getPropertyValue("--editor-search-control-top") !== nextTop && host.style.setProperty("--editor-search-control-top", nextTop), nextRight = right + "px", host.style.getPropertyValue("--editor-search-control-right") !== nextRight && host.style.setProperty("--editor-search-control-right", nextRight));
+      }), hasSampleControl ? host.setAttribute("data-editor-search-sample-control", "true") : host.removeAttribute("data-editor-search-sample-control"), nextTop = clamp(top, DEFAULT_CONTROL_TOP, maxTop) + "px", host.style.getPropertyValue("--editor-search-control-top") !== nextTop && host.style.setProperty("--editor-search-control-top", nextTop), nextRight = right + "px", host.style.getPropertyValue("--editor-search-control-right") !== nextRight && host.style.setProperty("--editor-search-control-right", nextRight));
     }
     function refreshHostLayoutSoon(host) {
       updateHostLayout(host), window.setTimeout(function() {
@@ -399,25 +417,9 @@
       };
       panel.classList.remove("jenkins-editor-search--visible"), panel.addEventListener("transitionend", onTransitionEnd), window.setTimeout(remove, 260);
     }
-    function getAceRange2() {
-      if (!window.ace || !window.ace.require)
-        return null;
-      try {
-        return window.ace.require("ace/range").Range;
-      } catch {
-        return null;
-      }
-    }
-    function getAceDocument2(editor) {
-      return editor.session.getDocument ? editor.session.getDocument() : editor.session.doc;
-    }
-    function isPrismCodeElement2(element) {
-      var classes;
-      return !element || element.tagName !== "CODE" ? !1 : (classes = " " + element.className + " " + (element.parentElement ? element.parentElement.className : "") + " ", classes.indexOf(" language-") !== -1 || classes.indexOf(" line-numbers ") !== -1 || classes.indexOf(" match-braces ") !== -1 || classes.indexOf(" highlight ") !== -1);
-    }
     function readonlyHostFromElement(element) {
       var host;
-      return !element || !element.closest || (host = element.closest("pre"), !host || !isVisible(host) || host.closest(".CodeMirror, .ace_editor, .jenkins-editor-search") || !Array.prototype.some.call(host.querySelectorAll("code"), isPrismCodeElement2)) ? null : host;
+      return !element || !element.closest || (host = element.closest("pre"), !host || !isVisible(host) || host.closest(".CodeMirror, .ace_editor, .jenkins-editor-search") || !Array.prototype.some.call(host.querySelectorAll("code"), isPrismCodeElement)) ? null : host;
     }
     function adapterFromCodeMirrorElement(element) {
       var codeMirror = element && element.CodeMirror;

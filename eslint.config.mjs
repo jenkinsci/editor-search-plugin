@@ -4,6 +4,11 @@ import { defineConfig, globalIgnores } from "eslint/config";
 
 /**
  * ESLint v10 config.
+ * 
+ * Run from cmd:
+ * <pre>
+ * npx eslint
+ * </pre>
  */
 export default defineConfig([
 	globalIgnores([
@@ -94,6 +99,7 @@ export default defineConfig([
 			"no-redeclare": "error",
 			"no-useless-escape": "off",
 			"no-useless-assignment": "off",
+			"no-empty": "off",
 
 			// maybe...
 			/*

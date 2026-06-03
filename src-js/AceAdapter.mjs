@@ -131,4 +131,22 @@
     return adapter && adapter.type === this.type && adapter.editor === this.editor;
   };
 
+  function getAceRange() {
+    if (!window.ace || !window.ace.require) {
+      return null;
+    }
+    try {
+      return window.ace.require("ace/range").Range;
+    } catch {
+      return null;
+    }
+  }
+
+  function getAceDocument(editor) {
+    if (editor.session.getDocument) {
+      return editor.session.getDocument();
+    }
+    return editor.session.doc;
+  }
+
 export { AceAdapter };
