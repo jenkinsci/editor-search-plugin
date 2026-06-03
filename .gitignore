@@ -1,4 +1,7 @@
 target
+*.priv.*
+*.priv
+*.lnk
 
 # mvn hpi:run
 work

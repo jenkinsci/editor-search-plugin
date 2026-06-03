@@ -35,9 +35,11 @@ java -jar jenkins-cli.jar -s http://localhost:8080/ install-plugin editor-search
 
 Editor Search supports dynamic loading, so installs through the plugin manager or Jenkins CLI can be deployed without restarting Jenkins. Jenkins may still require a restart when another plugin in the same operation requires one, or when a plugin file is copied manually into `JENKINS_HOME/plugins`.
 
+For developing the plugin see: [DEV.md](DEV.md).
+
 ## Usage
 
-Focus a supported Jenkins code editor and press `Ctrl+F` or `Command+F`. The search widget opens inside the editor. Press `Enter` for the next match, `Shift+Enter` for the previous match, or `Escape` to close the widget.
+Focus a supported Jenkins code editor and press `Ctrl+F` or `Command+F`. The search widget opens inside the editor. Press `Enter` for the next match, `Shift+Enter` for the previous match, or `Escape` to close the widget. You can also use `Ctrl+G` or `Command+G` for the next match.
 
 ![Script Console dark mode search](docs/images/console-dark-final.png)
 
