@@ -9,8 +9,10 @@
 	- [Frontend Build](#frontend-build)
 		- [Watch Mode](#watch-mode)
 		- [Linting JS](#linting-js)
-	- [Building the Jenkins Plugin](#building-the-jenkins-plugin)
-	- [Installing the Plugin in Jenkins](#installing-the-plugin-in-jenkins)
+	- [Testing the plugin](#testing-the-plugin)
+		- [Building the Jenkins Plugin](#building-the-jenkins-plugin)
+		- [Installing the Plugin via Jenkins GUI](#installing-the-plugin-via-jenkins-gui)
+		- [Installing the Plugin manually](#installing-the-plugin-manually)
 	- [Dependencies](#dependencies)
 		- [Frontend](#frontend)
 
