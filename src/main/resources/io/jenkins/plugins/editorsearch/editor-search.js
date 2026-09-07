@@ -146,7 +146,7 @@
 
     hostRect = host.getBoundingClientRect();
     Array.prototype.forEach.call(
-      host.querySelectorAll(".ace_scrollbar-v, .CodeMirror-vscrollbar"),
+      host.querySelectorAll(".ace_scrollbar-v, .CodeMirror-vscrollbar, .CodeMirror-scrollbar"),
       function (candidate) {
         var rect;
         if (!isVisible(candidate)) {
