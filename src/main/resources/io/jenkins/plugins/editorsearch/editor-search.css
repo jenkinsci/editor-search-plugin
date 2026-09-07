@@ -409,9 +409,9 @@ body[data-theme="dark"] .jenkins-editor-search__count,
 
 @media (max-width: 720px) {
   .jenkins-editor-search {
-    right: 6px;
+    right: var(--editor-search-control-right, 6px);
     left: 6px;
-    max-width: calc(100% - 12px);
+    max-width: calc(100% - var(--editor-search-control-right, 6px) - 6px);
     flex-wrap: wrap;
   }
 
